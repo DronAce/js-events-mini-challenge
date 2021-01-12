@@ -3,6 +3,7 @@ const header = document.querySelector("#header")
 console.log("Here's your header:", header)
 
 
+
 /***** Deliverable 2 *****/
 header.style.color = "green"
 
@@ -25,7 +26,7 @@ likes.textContent = `${traveler.likes} Likes`
 
 
 /***** Deliverable 4 *****/
-function renderAnimalSightingPost (animalObject) {
+function renderAnimalSightingPost(animalObject) {
     const li = document.createElement("li")
     li.dataset.id = animalObject.id
 
@@ -47,7 +48,7 @@ function renderAnimalSightingPost (animalObject) {
     animalsUl.append(li)
 }
 
-traveler.animalSightings.forEach(function (animalSightinObject) {
+traveler.animalSightings.forEach(function(animalSightinObject) {
     renderAnimalSightingPost(animalSightinObject)
 })
 
@@ -59,6 +60,10 @@ animalToRemove.remove()
 /************************** EVENTS JS MINI CHALLENGE ******************************/
 
 /***** Deliverable 1 *****/
+header.addEventListener("click", function() {
+    toggleColor(header)
+})
+
 function toggleColor(element) {
     if (element.style.color === "green") {
         element.style.color = "black"
@@ -68,5 +73,57 @@ function toggleColor(element) {
 }
 
 /***** Deliverable 2 *****/
+const likeButton = document.querySelector(".like-button")
+likeButton.addEventListener("click", function() {
+    increaseLikes(likes)
+})
+
+function increaseLikes(like) {
+    traveler.likes += 1
+    like.textContent = `${traveler.likes} Likes`
+}
 
 /***** Deliverable 3 *****/
+const animalForm = document.querySelector("#new-animal-sighting-form")
+animalForm.addEventListener("submit", function(event) {
+    event.preventDefault()
+    const speciesInput = event.target.species.value
+    const videoLinkInput = event.target.link.value
+    const photoLinkInput = event.target.photo.value
+    const descriptionInput = event.target.description.value
+
+    const post = {
+        id: 5,
+        species: speciesInput,
+        video: videoLinkInput,
+        photo: photoLinkInput,
+        description: descriptionInput
+    }
+    postForm(post)
+    event.target.reset()
+})
+
+function postForm(animalObject) {
+    const animals = document.querySelector('#animals')
+
+    const li = document.createElement("li")
+    li.dataset.id = animalObject.id
+
+    const p = document.createElement("p")
+    p.textContent = animalObject.description
+
+    const img = document.createElement("img")
+    img.src = animalObject.photo
+    img.alt = animalObject.species
+
+    const a = document.createElement("a")
+    a.href = animalObject.link
+    a.target = "_blank"
+    a.textContent = `Here's a video about the ${animalObject.species} species!`
+
+    li.append(p, img, a)
+
+
+    animals.append(li)
+
+}
